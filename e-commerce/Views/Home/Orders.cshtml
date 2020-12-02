@@ -1,0 +1,23 @@
+<h1>E-commerce Orders</h1>
+<h1>Welcome @ViewBag.LoginUser.FirstName @ViewBag.LoginUser.LastName</h1>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Products</th>
+            <th>Buyer</th>
+            <th>Seller</th>
+        </tr>
+    </thead>
+    @foreach (var item in ViewBag.AllOrders)
+    {
+    <tr>
+        <td>@item.Products.ProductName ProductId:@item.ProductId</td>
+        <td>@item.Users.FirstName UserId:@item.UserId</td>
+        <td>@item.Products.Creator.FirstName CreatorId:@item.Products.Creator.UserId</td><!-- Seller -->
+    </tr>
+    }
+</table>
+<div>
+    <a href="">see..more</a>
+</div>
