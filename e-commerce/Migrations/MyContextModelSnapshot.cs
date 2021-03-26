@@ -49,13 +49,12 @@ namespace e_commerce.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("varchar(300) CHARACTER SET utf8mb4")
-                        .HasMaxLength(300);
+                        .HasColumnType("varchar(1000) CHARACTER SET utf8mb4")
+                        .HasMaxLength(1000);
 
                     b.Property<string>("ProductName")
                         .IsRequired()
-                        .HasColumnType("varchar(40) CHARACTER SET utf8mb4")
-                        .HasMaxLength(40);
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");

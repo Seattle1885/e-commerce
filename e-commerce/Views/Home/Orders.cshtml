@@ -11,8 +11,8 @@
     </thead>
     @foreach (var item in ViewBag.AllOrders)
     {
-    <tr>
-        <td>@item.Products.ProductName ProductId:@item.ProductId</td>
+    <tr style="color: blue;">
+        <td>@item.Products.ProductName ProductId's:@item.ProductId</td>
         <td>@item.Users.FirstName UserId:@item.UserId</td>
         <td>@item.Products.Creator.FirstName CreatorId:@item.Products.Creator.UserId</td><!-- Seller -->
     </tr>

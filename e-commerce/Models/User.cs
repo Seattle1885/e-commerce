@@ -12,7 +12,7 @@ namespace e_commerce.Models
         public int UserId {get; set; }
 
         [Required]
-        [StringLength(20, MinimumLength=2)]
+        [StringLength(20, MinimumLength=5)]
         public string FirstName {get; set; }
 
         
