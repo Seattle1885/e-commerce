@@ -29,6 +29,7 @@ namespace e_commerce.Controllers
 
         [HttpGet("deleteSession")]
         public IActionResult Logout()
+        
         {
             HttpContext.Session.Clear();
             Console.WriteLine("Session has beeen cleared");
@@ -107,14 +108,17 @@ namespace e_commerce.Controllers
                 Console.WriteLine($"logInUser Id number is {LogInUser} and you are in Products");
                 // LogInUser ID number is displayed ex. 1 
 
+
+
             if (LogInUser == null)
             {
                 Console.WriteLine("You are not in session");
                 return RedirectToAction("Index");
             }
+
             ViewBag.LoginUser = db_context.Users
                 .SingleOrDefault(User => User.UserId == LogInUser);
-
+            
             ViewBag.AllProducts = db_context.Products
                 .Include(user => user.UserBuyers)
                 .Include(u => u.Creator)
