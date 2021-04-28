@@ -59,8 +59,16 @@
                     <h4 class="card-title">@item.ProductName</h4>
                     <h6 class="card-subtitle mb-2 text-muted">Quantity @item.Quantity</h6>
                     <p class="card-text">@item.Description</p>
+                    
                     <div>
+                        @if (@item.Quantity == 0 )
+                        {
+                        <div><a>Currently Unavailable, Sorry</a></div> 
+                        }
+                        else
+                        {
                         <a href="purchase/@item.ProductId" class="btn btn-primary">Purchase</a>
+                        }
                         @if (ViewBag.LoginUser == item.Creator)
                         {
                         <a href="delete/@item.ProductId" value="@item.Creator" class="btn btn-danger">Delete</a>
