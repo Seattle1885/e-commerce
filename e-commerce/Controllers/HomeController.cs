@@ -24,6 +24,8 @@ namespace e_commerce.Controllers
 
         public IActionResult Index()
         {
+            HttpContext.Session.Clear();
+            Console.WriteLine("Session has beeen cleared");
             return View();
         }
 
@@ -41,6 +43,12 @@ namespace e_commerce.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userEmailDB = db_context.Users.FirstOrDefault(userdb => userdb.Email == newUser.Email);
+                if (userEmailDB != null) // checks email in the database
+                {
+                    ModelState.AddModelError("Email", "Email is taken");
+                    return View("Index");
+                }
                 PasswordHasher<User> Hasher = new PasswordHasher<User>();
                 
                 newUser.Password = Hasher.HashPassword(newUser, newUser.Password);
@@ -48,6 +56,7 @@ namespace e_commerce.Controllers
                 db_context.SaveChanges();
                 
                 var userInDB = db_context.Users.SingleOrDefault(u => u.UserId == newUser.UserId);
+                
                 HttpContext.Session.SetInt32("LogInUser", userInDB.UserId);
 
                 Console.WriteLine($"New User {newUser.FirstName} Created and session was started");
@@ -142,9 +151,7 @@ namespace e_commerce.Controllers
             {
                 newProduct.UserId =(int)LogInUser; //string "1"  into a 1
                // string stringFileName = UploadFile(newProduct);
-                
-
-
+            
                 db_context.Add(newProduct);
                 db_context.SaveChanges();
 
@@ -159,15 +166,6 @@ namespace e_commerce.Controllers
             }
         }
 
-        /*private string UploadFile(Product pm)
-        {
-            string fileName = null;
-            if(pm.ProfileImage!=null)
-            {
-                st
-            }
-        }
-*/
         [HttpGet("delete/{SelectedProductId}")]
         public IActionResult DeleteProduct(int SelectedProductId)
         {
@@ -276,7 +274,7 @@ namespace e_commerce.Controllers
             }
             else
             {
-            productInDB.Quantity -= 1;
+            productInDB.Quantity -= 1; // removes 1 from the Quanitity in the DB
                 Console.WriteLine($"Line 203 above is the results of productInBd.Quantity -= 1 {productInDB.Quantity}");
             productInDB.UpdatedAt = DateTime.Now;
                 Console.WriteLine($"Line 206 this is the UpdatedAt time {productInDB.UpdatedAt}");
