@@ -117,8 +117,6 @@ namespace e_commerce.Controllers
                 Console.WriteLine($"logInUser Id number is {LogInUser} and you are in Products");
                 // LogInUser ID number is displayed ex. 1 
 
-
-
             if (LogInUser == null)
             {
                 Console.WriteLine("You are not in session");
@@ -127,12 +125,12 @@ namespace e_commerce.Controllers
 
             ViewBag.LoginUser = db_context.Users
                 .SingleOrDefault(User => User.UserId == LogInUser);
-            
             ViewBag.AllProducts = db_context.Products
                 .Include(user => user.UserBuyers)
                 .Include(u => u.Creator)
                 .OrderByDescending(u => u.CreatedAt)// display recent to oldest
                 .ToList();
+
             return View();
         }
 
@@ -297,7 +295,7 @@ namespace e_commerce.Controllers
         }
 
        [HttpGet("/orders")]
-        public IActionResult Orders()
+        public async Task<IActionResult>Orders(string sortOrder)
         {
             int ? LogInUser = HttpContext.Session.GetInt32("LogInUser"); 
                 Console.WriteLine($"logInUser Id number is {LogInUser} and you are in Orders");
@@ -323,8 +321,27 @@ namespace e_commerce.Controllers
 
                 ViewBag.LoginUser = db_context.Users
                     .SingleOrDefault(User => User.UserId == LogInUser);
+            
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            var products = from s in db_context.Products select s;
 
-            return View();
+            switch(sortOrder)
+            {
+                case "name_desc":
+                    products = products.OrderByDescending(p => p.ProductName);
+                    break;
+                case "Date":
+                    products = products.OrderBy(p => p.UpdatedAt);
+                    break;
+                case "date_desc":
+                    products = products.OrderByDescending(p => p.UpdatedAt);
+                    break;
+                default:
+                    products = products.OrderBy(p => p.ProductName);
+                    break;
+            }
+            return View(await products.AsNoTracking().ToListAsync());
         }
 
         [HttpGet("seeMore")]
