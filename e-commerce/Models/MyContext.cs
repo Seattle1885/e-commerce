@@ -12,5 +12,6 @@ namespace e_commerce.Models
         public DbSet<Product> Products {get; set;}
 
         public DbSet<Buyer> Buyers {get; set;}
+
     }
 }

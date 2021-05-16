@@ -22,8 +22,7 @@ namespace e_commerce.Models
         [Required]
         public int Quantity {get; set; }
 
-        [NotMapped]
-        public IFormFile ImageFile {get; set; }
+        [Display(Name = "Profile Picture")]  
 
         public DateTime CreatedAt {get; set; } = DateTime.Now;
         
